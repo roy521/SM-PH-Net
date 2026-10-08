@@ -1,0 +1,93 @@
+# DMF-Net 配置文件
+# 包含运动分支和双向交叉注意力融合的完整配置
+
+# RAFT-Lite 光流估计器配置
+raft_lite:
+  input_channels: 1          # 输入通道数（灰度图像）
+  base_channels: 32          # 基础通道数
+  num_iters: 4               # 光流迭代更新次数
+
+# 时序高斯平滑配置
+temporal_smoothing:
+  kernel_size: 5             # 高斯核大小
+  sigma: 1.0                 # 高斯核标准差
+
+# 时序平滑损失配置
+temporal_smooth_loss:
+  weight: 0.1                # 损失权重
+
+# 时空TCN编码器配置
+spatio_temporal_tcn:
+  in_channels: 2             # 输入通道数（光流u,v）
+  num_channels: [32, 64]     # 各层通道数
+  kernel_size: 3             # 卷积核大小
+  dropout: 0.2               # Dropout概率
+  dilation_factor: 2         # 空洞卷积膨胀因子
+  return_global: true        # 是否返回全局特征
+
+# MotionBranch 完整配置
+motion_branch:
+  input_channels: 1          # 输入图像通道数
+  flow_channels: 2           # 光流通道数
+  tcn_channels: [32, 64]     # TCN编码器通道数
+  smooth_kernel_size: 5      # 高斯平滑核大小
+  smooth_sigma: 1.0          # 高斯平滑标准差
+  smooth_loss_weight: 0.1    # 平滑损失权重
+
+# MSTF 多尺度特征融合配置
+mstf:
+  in_channels: [64, 128, 256]  # 各尺度输入通道数
+  out_channels: 128            # 输出通道数
+  use_attention: true          # 是否使用通道注意力
+
+# 双向交叉注意力融合配置
+bidirectional_cross_attention:
+  dim: 128                     # 特征维度
+  num_heads: 8                 # 注意力头数
+  dropout: 0.1                 # Dropout概率
+
+# 门控融合配置
+gated_fusion:
+  dim: 128                     # 特征维度
+
+# DMF-Net 完整架构配置
+dmf_net:
+  fusion_type: 'cross_attention'  # 融合类型: 'cross_attention', 'gated', 'simple'
+  num_heads: 8                    # 注意力头数
+  dropout: 0.1                    # Dropout概率
+
+# 训练配置
+training:
+  flow_loss_weight: 0.1      # 光流平滑损失权重
+  fusion_type: 'cross_attention'  # 特征融合类型
+  learning_rate: 0.0001      # 学习率
+  batch_size: 4              # 批次大小
+  num_epochs: 50             # 训练轮数
+  early_stopping_patience: 15  # 早停耐心值
+
+# 超参数搜索范围
+hyperparameter_search:
+  smooth_kernel_size: [3, 5, 7]
+  smooth_sigma: [0.5, 1.0, 1.5]
+  smooth_loss_weight: [0.01, 0.05, 0.1, 0.5]
+  tcn_channels: [[16, 32], [32, 64], [64, 128]]
+  fusion_type: ['cross_attention', 'gated', 'simple']
+  num_heads: [4, 8, 16]
+
+# 性能优化配置
+optimization:
+  use_mixed_precision: false  # 是否使用混合精度训练
+  gradient_clip_norm: 1.0    # 梯度裁剪范数
+  weight_decay: 0.0001       # 权重衰减
+
+# 可视化配置
+visualization:
+  save_flow_images: true     # 是否保存光流图像
+  save_gradcam: true         # 是否保存Grad-CAM
+  visualization_interval: 5  # 可视化间隔（epoch）
+
+# 日志配置
+logging:
+  log_dir: "logs"            # 日志目录
+  log_level: "INFO"          # 日志级别
+  save_predictions: false    # 是否保存预测结果
