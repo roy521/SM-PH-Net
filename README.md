@@ -183,7 +183,21 @@ The following entry refers to the manuscript and can be updated when publication
   note = {Manuscript}
 }
 ```
+## Data availability
 
+This study uses two publicly available cine cardiac magnetic resonance (CMR) datasets. The original data sources and access links are listed below:
+
+- **GY-PH-dataset**  
+  [Dataset access via Google Drive](https://drive.google.com/drive/folders/1looBdxsJLGFKBk2ZwQPu466VG5ozuV-S)  
+  Provided through the original [PHNet project](https://github.com/gy-xinchen/PHNet).  
+  Reference: Yuan et al., *IEEE Transactions on Medical Imaging*, 2025. [DOI: 10.1109/TMI.2025.3555621](https://doi.org/10.1109/TMI.2025.3555621).
+
+- **ShefPAH-179**  
+  [Dataset repository](https://github.com/pykale/data/tree/main/images/ShefPAH-179)  
+  Provided by the University of Sheffield. See the [dataset documentation](https://github.com/pykale/data/blob/main/images/ShefPAH-179/ReadMe.md) for details.  
+  Reference: Swift et al., *European Heart Journal – Cardiovascular Imaging*, 2021. [DOI: 10.1093/ehjci/jeaa001](https://doi.org/10.1093/ehjci/jeaa001).
+
+Please refer to the original providers’ documentation for data access and usage terms, and cite the corresponding source publications when using these datasets.
 ## Intended Use
 
 SM-PH Net is intended for research. The manuscript discusses potential clinical deployment; prospective validation, calibration, workflow evaluation, and clinically relevant operating thresholds remain future work.
